@@ -1,0 +1,20 @@
+package enums;
+
+public enum GeneroFilme {
+	
+	ACAO, 
+	AVENTURA,
+	COMEDIA,
+	DANCA,
+	DOCUMENTARIO,
+	DRAMA,
+	FAROESTE,
+	FANTASIA,
+	FICCAO_CIENTIFICA,
+	GUERRA,
+	MUSICAL,
+	POLICIAL,
+	ROMANCE,
+	SUSPENSE,
+	TERROR
+}
