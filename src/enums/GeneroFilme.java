@@ -2,7 +2,8 @@ package enums;
 
 public enum GeneroFilme {
 	
-	ACAO, 
+	ACAO,
+	ANIMACAO,
 	AVENTURA,
 	COMEDIA,
 	DANCA,

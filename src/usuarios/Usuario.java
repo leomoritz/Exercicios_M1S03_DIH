@@ -3,6 +3,7 @@ package usuarios;
 import java.util.ArrayList;
 import java.util.List;
 
+import filmes.CatalogoFilmes;
 import filmes.Filme;
 
 public class Usuario {
@@ -85,12 +86,16 @@ public class Usuario {
 		return false;
 	}
 
+	public List<String[]> listarRecomendacoes(Usuario usuario) {
+		return usuario.recomendacoesRecebidas;
+	}
+
 	public void recomendarFilme(Filme filme, String textoRecomendacao, Usuario usuarioOrigem, Usuario usuarioDestino) {
-		usuarioDestino.recomendacoesRecebidas
-				.add(new String[] { "Filme Recomendado: " + filme.getNome(), "Texto Recomendação: " + textoRecomendacao, "Usuário que recomendou: " + usuarioOrigem.getNome() });
+		usuarioDestino.recomendacoesRecebidas.add(new String[] { "Filme Recomendado: " + filme.getNome(),
+				"Texto Recomendação: " + textoRecomendacao, "Usuário que recomendou: " + usuarioOrigem.getNome() });
 	}
 	
-	public List<String[]> listarRecomendacoes(Usuario usuario){
-		return usuario.recomendacoesRecebidas;
+	public void indicarFilmeCatalogo(CatalogoFilmes catalogoFilme, String nomeNovoFilme) {
+		catalogoFilme.addIndicacoesNovosFilme(nomeNovoFilme);
 	}
 }
