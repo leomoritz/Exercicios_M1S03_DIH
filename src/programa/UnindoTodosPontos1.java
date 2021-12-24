@@ -6,6 +6,8 @@ import java.util.List;
 import enums.GeneroFilme;
 import filmes.CatalogoFilmes;
 import filmes.Filme;
+import filmes.IndicacoesMelhorCatalogo;
+import interfaces.IndicacoesCatalogo;
 import usuarios.Usuario;
 
 public class UnindoTodosPontos1 {
@@ -77,11 +79,10 @@ public class UnindoTodosPontos1 {
 		
 		// Recomendando filmes para outros usuários
 		usuario1.recomendarFilme(filme6, "Filme sensacional pra quem gosta de ficção "
-				+ "científica. Super recomendo!", 
-				usuario1, usuario2);
+				+ "científica. Super recomendo!", usuario2);
 		
-		usuario1.recomendarFilme(filme5, "Filme incrível! Você precisa assistir", 
-				usuario1, usuario2);
+		usuario1.recomendarFilme(filme5, "Filme incrível! Você precisa assistir"
+				, usuario2);
 
 		// Curtindo/Descurtindo filmes
 		if(!usuario1.curtirFilme(filme1, usuario1)) {
@@ -109,9 +110,10 @@ public class UnindoTodosPontos1 {
 		}	
 
 		// Indicando filmes novos para o catálogo da platagorma de filmes
-		usuario1.indicarFilmeCatalogo(catalogo, "Harry Potter e a Pedra Filosofal");
-		usuario2.indicarFilmeCatalogo(catalogo, "Tá Dando Onda");
-		usuario3.indicarFilmeCatalogo(catalogo, "Viva - A vida é uma festa");
+		IndicacoesCatalogo indicacoesNovosFilmes = new IndicacoesMelhorCatalogo();
+		usuario1.indicarFilmeCatalogo(indicacoesNovosFilmes, "Harry Potter e a Pedra Filosofal");
+		usuario2.indicarFilmeCatalogo(indicacoesNovosFilmes, "Tá Dando Onda");
+		usuario3.indicarFilmeCatalogo(indicacoesNovosFilmes, "Viva - A vida é uma festa");
 		
 		//Listando quantidade de curtidas de cada filme da plataforma
 		System.out.println("---------------------------");	
@@ -132,8 +134,10 @@ public class UnindoTodosPontos1 {
 		System.out.println("---------------------------");
 		//Listando filmes que foram indicados para a plataforma
 		System.out.println("Recomendações de filmes para o catálogo da plataforma: ");
-		for(String i : catalogo.getIndicacoesNovosFilmes()) {
-			System.out.println(i);
+		for(String[] i : catalogo.listaIndicacoesNovosFilmes(indicacoesNovosFilmes)) {
+			for(int j = 0; j < i.length; j++) {
+			System.out.println(i[j]);
 		}
-}
+			}
+		}
 }

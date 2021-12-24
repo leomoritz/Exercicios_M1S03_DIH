@@ -3,14 +3,15 @@ package usuarios;
 import java.util.ArrayList;
 import java.util.List;
 
-import filmes.CatalogoFilmes;
 import filmes.Filme;
+import interfaces.IndicacoesCatalogo;
 
 public class Usuario {
 
 	private String nome;
 	private String endereco;
 	private String dataNascimento;
+	private IndicacoesCatalogo indicacoesNovosFilmes;
 	private List<String[]> recomendacoesRecebidas = new ArrayList<String[]>();
 	private List<Filme> filmesCurtidos = new ArrayList<>();
 
@@ -42,6 +43,10 @@ public class Usuario {
 
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+	
+	public IndicacoesCatalogo getIndicacoesNovosFilmes() {
+		return indicacoesNovosFilmes;
 	}
 
 	private void addFilmesCurtidos(Filme filme) {
@@ -90,12 +95,12 @@ public class Usuario {
 		return usuario.recomendacoesRecebidas;
 	}
 
-	public void recomendarFilme(Filme filme, String textoRecomendacao, Usuario usuarioOrigem, Usuario usuarioDestino) {
+	public void recomendarFilme(Filme filme, String textoRecomendacao, Usuario usuarioDestino) {
 		usuarioDestino.recomendacoesRecebidas.add(new String[] { "Filme Recomendado: " + filme.getNome(),
-				"Texto Recomendação: " + textoRecomendacao, "Usuário que recomendou: " + usuarioOrigem.getNome() });
+				"Texto Recomendação: " + textoRecomendacao, "Usuário que recomendou: " + this.getNome()});
 	}
 	
-	public void indicarFilmeCatalogo(CatalogoFilmes catalogoFilme, String nomeNovoFilme) {
-		catalogoFilme.addIndicacoesNovosFilme(nomeNovoFilme);
+	public void indicarFilmeCatalogo(IndicacoesCatalogo indicacaoCatalogo, String nomeNovoFilme) {
+		indicacaoCatalogo.addIndicacoesNovosFilme(nomeNovoFilme, this.getNome());
 	}
 }
