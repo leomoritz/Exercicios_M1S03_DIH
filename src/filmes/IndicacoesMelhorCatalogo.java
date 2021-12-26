@@ -1,27 +1,26 @@
 package filmes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import interfaces.IndicacoesCatalogo;
 
 public class IndicacoesMelhorCatalogo implements IndicacoesCatalogo {
-	
-	private List<String[]> indicacoesNovosFilmes = new ArrayList<>();
-	
+
 	@Override
-	public void addIndicacoesNovosFilme(String indicacaoFilme, String usuario) {
-		indicacoesNovosFilmes.add(new String[]{"Filme Indicado: " + indicacaoFilme + " - Usuário que indicou: " + usuario});
+	public String addIndicacoesNovosFilme(String nomeNovoFilme, String usuarioIndicou, CatalogoFilmes catalogo) {
+		catalogo.getIndicacoesNovosFilmes()
+				.add("Filme indicado: " + nomeNovoFilme + " - Usuário que indicou: " + usuarioIndicou);
+		return "Indicação do filme " + nomeNovoFilme + " realizada com sucesso! Muito obrigado por nos ajudar a tornar "
+				+ "a DevInFlix na melhor plataforma de filmes que existe";
+
 	}
-	
+
 	@Override
-	public void removeIndicacoesNovosFilme(String indicacaoFilme) {
-		indicacoesNovosFilmes.remove(indicacaoFilme);
+	public boolean removeIndicacoesNovosFilme(int indexIndicacao, CatalogoFilmes catalogo) {
+		int tamanhoLista = catalogo.getIndicacoesNovosFilmes().size();
+		catalogo.getIndicacoesNovosFilmes().remove(indexIndicacao);
+		if (tamanhoLista < catalogo.getIndicacoesNovosFilmes().size()) {
+			return true;
+		}
+		return false;
 	}
-	
-	@Override
-	public List<String[]> listaIndicacoesNovosFilmes(){
-		return indicacoesNovosFilmes;
-	}
-	
+
 }

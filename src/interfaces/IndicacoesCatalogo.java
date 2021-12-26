@@ -1,13 +1,11 @@
 package interfaces;
 
-import java.util.List;
+import filmes.CatalogoFilmes;
 
 public interface IndicacoesCatalogo {
-	
-	public void addIndicacoesNovosFilme(String indicacaoFilme, String usuario);
-	
-	public void removeIndicacoesNovosFilme(String indicacaoFilme);
-	
-	public List<String[]> listaIndicacoesNovosFilmes();
+
+	public String addIndicacoesNovosFilme(String nomeNovoFilme, String usuarioIndicou, CatalogoFilmes catalogo);
+
+	public boolean removeIndicacoesNovosFilme(int indexIndicacao, CatalogoFilmes catalogo);
 
 }

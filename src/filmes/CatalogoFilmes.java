@@ -3,11 +3,10 @@ package filmes;
 import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.IndicacoesCatalogo;
-
 public class CatalogoFilmes {
 
 	private List<Filme> filmes = new ArrayList<>();
+	private List<String> indicacoesNovosFilmes = new ArrayList<>();
 
 	// Construtor
 	public CatalogoFilmes(List<Filme> filmes) {
@@ -17,6 +16,10 @@ public class CatalogoFilmes {
 	// Getters
 	public List<Filme> getFilmes() {
 		return filmes;
+	}
+	
+	public List<String> getIndicacoesNovosFilmes() {
+		return indicacoesNovosFilmes;
 	}
 
 	// Métodos para adicionar e remover filmes do catálogo
@@ -38,8 +41,8 @@ public class CatalogoFilmes {
 	}
 	
 	//Retorna uma lista com o nome dos filmes indicados pelos usuários para o catálogo
-	public List<String[]> listaIndicacoesNovosFilmes(IndicacoesCatalogo indicacoes){
-		return indicacoes.listaIndicacoesNovosFilmes();
+	public List<String> listaIndicacoesNovosFilmes(){
+		return indicacoesNovosFilmes;
 	}
 
 }

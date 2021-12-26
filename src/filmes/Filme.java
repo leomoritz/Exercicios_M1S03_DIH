@@ -15,6 +15,7 @@ public class Filme {
 	private int qtdCurtidas;
 	private List<Usuario> usuariosCurtidas = new ArrayList<>();
 
+	// Construtor
 	public Filme(String nome, String sinopse, GeneroFilme genero, String linkFilme) {
 		this.nome = nome;
 		this.sinopse = sinopse;
@@ -22,6 +23,7 @@ public class Filme {
 		this.linkFilme = linkFilme;
 	}
 
+	// Getters & Setters
 	public String getNome() {
 		return nome;
 	}
@@ -61,16 +63,18 @@ public class Filme {
 	public void setQtdCurtidas(int qtdCurtidas) {
 		this.qtdCurtidas = qtdCurtidas;
 	}
-	
+
+	// Métodos criados para saber quais foram os usuários que curtiram este filme
+
 	public void addUsuarioCurtiu(Usuario usuario) {
 		this.usuariosCurtidas.add(usuario);
 	}
-	
+
 	public void removeUsuarioCurtiu(Usuario usuario) {
 		this.usuariosCurtidas.remove(usuario);
 	}
-	
-	public List<Usuario> listaUsuarioCurtiu(){
+
+	public List<Usuario> listaUsuarioCurtiu() {
 		return usuariosCurtidas;
 	}
 
