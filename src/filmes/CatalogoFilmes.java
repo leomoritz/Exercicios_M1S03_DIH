@@ -17,7 +17,7 @@ public class CatalogoFilmes {
 	public List<Filme> getFilmes() {
 		return filmes;
 	}
-	
+
 	public List<String> getIndicacoesNovosFilmes() {
 		return indicacoesNovosFilmes;
 	}
@@ -39,10 +39,20 @@ public class CatalogoFilmes {
 		}
 		return listaFilmesCatalogo;
 	}
-	
-	//Retorna uma lista com o nome dos filmes indicados pelos usuários para o catálogo
-	public List<String> listaIndicacoesNovosFilmes(){
+
+	// Retorna uma lista com o nome dos filmes indicados pelos usuários para o
+	// catálogo
+	public List<String> listaIndicacoesNovosFilmes() {
 		return indicacoesNovosFilmes;
 	}
 
+	// Método para adicionar os gêneros mais assistidos:
+	public void addGeneroMaisAssistido(Filme filme) {
+		int acaoCount = 0;
+		switch (filme.getGenero().getCount()) {
+		case 1:
+			acaoCount++;
+		}
+
+	}
 }

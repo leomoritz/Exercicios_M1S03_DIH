@@ -153,6 +153,10 @@ public class UnindoTodosPontos1 {
 			System.out.println(aux + " - " + i);
 			aux++;
 		}
+		
+		// Assistindo filme:
+		System.out.println("---------------------------");
+		System.out.println(usuario1.assistirFilme(catalogo, filme6));
 
 	}
 }

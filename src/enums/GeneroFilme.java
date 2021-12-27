@@ -2,20 +2,30 @@ package enums;
 
 public enum GeneroFilme {
 	
-	ACAO,
-	ANIMACAO,
-	AVENTURA,
-	COMEDIA,
-	DANCA,
-	DOCUMENTARIO,
-	DRAMA,
-	FAROESTE,
-	FANTASIA,
-	FICCAO_CIENTIFICA,
-	GUERRA,
-	MUSICAL,
-	POLICIAL,
-	ROMANCE,
-	SUSPENSE,
-	TERROR
+	ACAO(1),
+	ANIMACAO(2),
+	AVENTURA(3),
+	COMEDIA(4),
+	DANCA(5),
+	DOCUMENTARIO(6),
+	DRAMA(7),
+	FAROESTE(8),
+	FANTASIA(9),
+	FICCAO_CIENTIFICA(10),
+	GUERRA(11),
+	MUSICAL(12),
+	POLICIAL(13),
+	ROMANCE(14),
+	SUSPENSE(15),
+	TERROR(16);
+	
+	private int count;
+	
+	GeneroFilme(int count){
+		this.count = count;
+	}
+	
+	public int getCount() {
+		return this.count;
+	}
 }
