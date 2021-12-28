@@ -156,7 +156,16 @@ public class UnindoTodosPontos1 {
 		
 		// Assistindo filme:
 		System.out.println("---------------------------");
-		System.out.println(usuario1.assistirFilme(catalogo, filme6));
-
+		//System.out.println(usuario1.assistirFilme(catalogo, filme1));
+		System.out.println(usuario2.assistirFilme(catalogo, filme1));
+		System.out.println(usuario3.assistirFilme(catalogo, filme1));
+		System.out.println(usuario1.assistirFilme(catalogo, filme2));
+		System.out.println(usuario2.assistirFilme(catalogo, filme2));
+		System.out.println(usuario3.assistirFilme(catalogo, filme2));
+		
+		System.out.println("---------------------------");
+		System.out.println("GENEROS MAIS ASSISTIDO DO CATÁLOGO DE FILMES");
+		System.out.println(catalogo.getGeneroMaisAssistidoCatalogo());
+		
 	}
 }

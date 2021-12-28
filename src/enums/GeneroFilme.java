@@ -19,13 +19,22 @@ public enum GeneroFilme {
 	SUSPENSE(15),
 	TERROR(16);
 	
-	private int count;
+	private int id;
+	private int coutplus = 0;
 	
-	GeneroFilme(int count){
-		this.count = count;
+	GeneroFilme(int id){
+		this.id = id;
 	}
 	
-	public int getCount() {
-		return this.count;
+	public int getId() {
+		return this.id;
+	}
+	
+	public int getCountPlus() {
+		return this.coutplus;
+	}
+	
+	public void setCountPlus(int countplus) {
+		this.coutplus = countplus;
 	}
 }

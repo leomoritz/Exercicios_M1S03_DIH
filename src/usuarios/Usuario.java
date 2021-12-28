@@ -126,8 +126,8 @@ public class Usuario {
 	// Método para assistir um filme
 	public String assistirFilme(CatalogoFilmes catalogo, Filme filme) {
 		if(catalogo.getFilmes().contains(filme)) {
+			catalogo.addGeneroAssistido(filme.getGenero());
 			return "Executando player para reproduzir o filme do link a seguir: " + filme.getLinkFilme();
-			
 		}
 		return "Filme não encontrado no catálogo";
 	}

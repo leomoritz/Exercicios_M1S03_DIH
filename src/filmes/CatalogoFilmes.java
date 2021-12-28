@@ -3,10 +3,14 @@ package filmes;
 import java.util.ArrayList;
 import java.util.List;
 
+import enums.GeneroFilme;
+
 public class CatalogoFilmes {
 
 	private List<Filme> filmes = new ArrayList<>();
 	private List<String> indicacoesNovosFilmes = new ArrayList<>();
+	private List<GeneroFilme> generosAssistidosCatalogo = new ArrayList<>();
+	private GeneroFilme generoMaisAssistidoCatalogo;
 
 	// Construtor
 	public CatalogoFilmes(List<Filme> filmes) {
@@ -46,13 +50,24 @@ public class CatalogoFilmes {
 		return indicacoesNovosFilmes;
 	}
 
-	// Método para adicionar os gêneros mais assistidos:
-	public void addGeneroMaisAssistido(Filme filme) {
-		int acaoCount = 0;
-		switch (filme.getGenero().getCount()) {
-		case 1:
-			acaoCount++;
-		}
-
+	// Adiciona Genero Assistido pelo usuário em uma lista
+	public void addGeneroAssistido(GeneroFilme genero) {
+		this.generosAssistidosCatalogo.add(genero);
+		genero.setCountPlus(genero.getCountPlus() + 1); // adiciona a quantidade de vezes que o genero foi assistido
 	}
+
+	/*
+	 * Método que percorre a lista de generos assistidos e encontra o genero mais
+	 * assistido da lista.
+	 */
+	public String getGeneroMaisAssistidoCatalogo() {
+		for (GeneroFilme generoMaisAssistido : this.generosAssistidosCatalogo) {
+			if (this.generoMaisAssistidoCatalogo == null
+					|| generoMaisAssistido.getCountPlus() > this.generoMaisAssistidoCatalogo.getCountPlus()) {
+				this.generoMaisAssistidoCatalogo = generoMaisAssistido;
+			}
+		}
+		return this.generoMaisAssistidoCatalogo.name();
+	}
+
 }
