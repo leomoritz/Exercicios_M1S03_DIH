@@ -6,6 +6,7 @@ import java.util.List;
 import enums.GeneroFilme;
 import filmes.CatalogoFilmes;
 import filmes.Filme;
+import filmes.GeneroAssistido;
 import filmes.IndicacoesMelhorCatalogoPlus;
 import interfaces.IndicacoesCatalogo;
 import usuarios.Usuario;
@@ -156,16 +157,43 @@ public class UnindoTodosPontos1 {
 		
 		// Assistindo filme:
 		System.out.println("---------------------------");
-		//System.out.println(usuario1.assistirFilme(catalogo, filme1));
+		System.out.println(usuario1.assistirFilme(catalogo, filme3));
+		System.out.println(usuario1.assistirFilme(catalogo, filme3));
+		System.out.println(usuario1.assistirFilme(catalogo, filme3));
+		System.out.println(usuario1.assistirFilme(catalogo, filme3));
+		System.out.println(usuario1.assistirFilme(catalogo, filme1));
+		System.out.println(usuario1.assistirFilme(catalogo, filme5));
+		System.out.println(usuario1.assistirFilme(catalogo, filme1));
+		System.out.println(usuario1.assistirFilme(catalogo, filme1));
+		System.out.println(usuario1.assistirFilme(catalogo, filme5));
+		System.out.println(usuario1.assistirFilme(catalogo, filme5));
+		System.out.println(usuario1.assistirFilme(catalogo, filme1));
+		
+			
 		System.out.println(usuario2.assistirFilme(catalogo, filme1));
-		System.out.println(usuario3.assistirFilme(catalogo, filme1));
-		System.out.println(usuario1.assistirFilme(catalogo, filme2));
 		System.out.println(usuario2.assistirFilme(catalogo, filme2));
-		System.out.println(usuario3.assistirFilme(catalogo, filme2));
+		
+		System.out.println(usuario3.assistirFilme(catalogo, filme1));
+		System.out.println(usuario3.assistirFilme(catalogo, filme3));
+		
+		
+		System.out.println("---------------------------");
+		System.out.println("GENEROS ASSISTIDO DO CATÁLOGO DE FILMES");
+		for(GeneroAssistido i : catalogo.listaGenerosAssistidosCatalogo()) {
+			System.out.println(i.getGeneroAssistido().name() + " - " + i.getQtdAssistido());
+		}
+		
+		System.out.println("\nGENEROS ASSISTIDOS PELO USUÁRIO " + usuario1.getNome().toUpperCase());
+		for(GeneroAssistido i : usuario1.listaGenerosAssistidosUsuario()) {
+			System.out.println(i.getGeneroAssistido().name() + " - " + i.getQtdAssistido());
+		}
 		
 		System.out.println("---------------------------");
 		System.out.println("GENEROS MAIS ASSISTIDO DO CATÁLOGO DE FILMES");
-		System.out.println(catalogo.getGeneroMaisAssistidoCatalogo());
+		System.out.println(catalogo.getGeneroMaisAssistido().name());
+		
+		System.out.println("\nGENEROS MAIS ASSISTIDO DO USUÁRIO " + usuario1.getNome().toUpperCase());
+		System.out.println(usuario1.getGeneroMaisAssistido().name());
 		
 	}
 }

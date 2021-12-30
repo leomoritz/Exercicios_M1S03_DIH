@@ -20,8 +20,7 @@ public enum GeneroFilme {
 	TERROR(16);
 	
 	private int id;
-	private int coutplus = 0;
-	
+		
 	GeneroFilme(int id){
 		this.id = id;
 	}
@@ -30,11 +29,4 @@ public enum GeneroFilme {
 		return this.id;
 	}
 	
-	public int getCountPlus() {
-		return this.coutplus;
-	}
-	
-	public void setCountPlus(int countplus) {
-		this.coutplus = countplus;
-	}
 }

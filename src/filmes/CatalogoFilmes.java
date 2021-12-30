@@ -2,15 +2,24 @@ package filmes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import enums.GeneroFilme;
+import interfaces.GeneroMaisAssistido;
 
-public class CatalogoFilmes {
+public class CatalogoFilmes implements GeneroMaisAssistido {
 
 	private List<Filme> filmes = new ArrayList<>();
 	private List<String> indicacoesNovosFilmes = new ArrayList<>();
-	private List<GeneroFilme> generosAssistidosCatalogo = new ArrayList<>();
-	private GeneroFilme generoMaisAssistidoCatalogo;
+	
+	/*
+	 * Utilizado TreeSet para não permitir elementos repetidos em relação aos
+	 * gêneros mais assistidos. Implementado equals/hashcode e compareTo na classe
+	 * GeneroAssistido
+	 */
+	private Set<GeneroAssistido> generosAssistidosCatalogo = new TreeSet<>();
+	private GeneroAssistido generoMaisAssistidoCatalogo;
 
 	// Construtor
 	public CatalogoFilmes(List<Filme> filmes) {
@@ -50,24 +59,56 @@ public class CatalogoFilmes {
 		return indicacoesNovosFilmes;
 	}
 
-	// Adiciona Genero Assistido pelo usuário em uma lista
+	@Override
 	public void addGeneroAssistido(GeneroFilme genero) {
-		this.generosAssistidosCatalogo.add(genero);
-		genero.setCountPlus(genero.getCountPlus() + 1); // adiciona a quantidade de vezes que o genero foi assistido
+
+		GeneroAssistido novoGeneroAssistido = new GeneroAssistido(genero, 1);
+
+		/*
+		 * Verifica inicialmente se a lista está vazia ou se o genero ainda não existe.
+		 * Se sim, adiciona um elemento. Se não, percorre a lista até encontrar o
+		 * gênero, se encontrar, acrescenta a quantidade assistida
+		 */
+		if (generosAssistidosCatalogo.isEmpty() || !generosAssistidosCatalogo.contains(novoGeneroAssistido)) {
+			generosAssistidosCatalogo.add(novoGeneroAssistido);
+		} else {
+			for (GeneroAssistido generoAssistido : generosAssistidosCatalogo) {
+				if (generoAssistido.equals(novoGeneroAssistido)) {
+					generoAssistido.setQtdAssistido(generoAssistido.getQtdAssistido() + 1);
+				}
+			}
+		}
 	}
 
-	/*
-	 * Método que percorre a lista de generos assistidos e encontra o genero mais
-	 * assistido da lista.
-	 */
-	public String getGeneroMaisAssistidoCatalogo() {
-		for (GeneroFilme generoMaisAssistido : this.generosAssistidosCatalogo) {
+	@Override
+	public GeneroFilme getGeneroMaisAssistido() {
+
+		/*
+		 * Percorre a lista para validar qual é o genero mais assitido pelo usuário
+		 */
+		for (GeneroAssistido generoMaisAssistido : this.generosAssistidosCatalogo) {
+
+			/*
+			 * Valida se o gênero mais assistido for vazio ou se a quantidade assistida do
+			 * gênero da lista for maior que o genero mais assistido
+			 */
 			if (this.generoMaisAssistidoCatalogo == null
-					|| generoMaisAssistido.getCountPlus() > this.generoMaisAssistidoCatalogo.getCountPlus()) {
+					|| generoMaisAssistido.getQtdAssistido() > this.generoMaisAssistidoCatalogo.getQtdAssistido()) {
 				this.generoMaisAssistidoCatalogo = generoMaisAssistido;
 			}
 		}
-		return this.generoMaisAssistidoCatalogo.name();
+		
+		/*
+		 * Se houverem elementos com a mesma quantidade assistida
+		 * o genêro mais assistido será retornado conforme ordem alfabética
+		 */
+		
+		return this.generoMaisAssistidoCatalogo.getGeneroAssistido();
+	}
+
+	// Retorna lista dos gêneros assistidos do cátalogo
+	public Set<GeneroAssistido> listaGenerosAssistidosCatalogo() {
+		return this.generosAssistidosCatalogo;
 	}
 
 }
