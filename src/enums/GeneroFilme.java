@@ -19,7 +19,7 @@ public enum GeneroFilme {
 	SUSPENSE(15),
 	TERROR(16);
 	
-	private int id;
+	private Integer id;
 		
 	GeneroFilme(int id){
 		this.id = id;
@@ -27,6 +27,10 @@ public enum GeneroFilme {
 	
 	public int getId() {
 		return this.id;
+	}
+	
+	public int getEnumById() {
+		return this.ordinal();
 	}
 	
 }

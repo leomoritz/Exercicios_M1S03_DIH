@@ -5,32 +5,37 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import Servicos.ServicoPagamentoBasico;
 import enums.GeneroFilme;
 import filmes.CatalogoFilmes;
 import filmes.Filme;
 import filmes.GeneroAssistido;
 import interfaces.GeneroMaisAssistido;
 import interfaces.IndicacoesCatalogo;
+import interfaces.ServicoPagamento;
 
 public class Usuario implements GeneroMaisAssistido {
 
 	private String nome;
 	private String endereco;
 	private String dataNascimento;
+	private ContratoCliente contrato;
+	private static final ServicoPagamento servicoPagamento = new ServicoPagamentoBasico();
 
 	private List<String> indicacoesFilmesUsuario = new ArrayList<>();
 	private List<String> recomendacoesRecebidas = new ArrayList<>();
 	private List<Filme> filmesCurtidos = new ArrayList<>();
-
-	/*
-	 * Utilizado TreeSet para não permitir elementos repetidos em relação aos
-	 * gêneros mais assistidos. Implementado equals/hashcode e compareTo na classe
-	 * GeneroAssistido
-	 */
 	private Set<GeneroAssistido> generosAssistidosUsuario = new TreeSet<>();
 	private GeneroAssistido generoMaisAssistidoUsuario;
 
-	// Construtor
+	// Construtores da classe
+	public Usuario(String nome, String endereco, String dataNascimento, ContratoCliente contrato) {
+		this.nome = nome;
+		this.endereco = endereco;
+		this.dataNascimento = dataNascimento;
+		this.contrato = contrato;
+	}
+
 	public Usuario(String nome, String endereco, String dataNascimento) {
 		this.nome = nome;
 		this.endereco = endereco;
@@ -38,7 +43,6 @@ public class Usuario implements GeneroMaisAssistido {
 	}
 
 	// Getters & Setters
-
 	public String getNome() {
 		return nome;
 	}
@@ -61,6 +65,22 @@ public class Usuario implements GeneroMaisAssistido {
 
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+
+	public GeneroAssistido getGeneroMaisAssistidoUsuario() {
+		return generoMaisAssistidoUsuario;
+	}
+
+	public void setGeneroMaisAssistidoUsuario(GeneroAssistido generoMaisAssistidoUsuario) {
+		this.generoMaisAssistidoUsuario = generoMaisAssistidoUsuario;
+	}
+
+	public ContratoCliente getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(ContratoCliente contrato) {
+		this.contrato = contrato;
 	}
 
 	/*
@@ -139,12 +159,28 @@ public class Usuario implements GeneroMaisAssistido {
 
 	// Método para assistir um filme
 	public String assistirFilme(CatalogoFilmes catalogo, Filme filme) {
+
+		if (getContrato() == null) {
+			return "Olá " + this.nome + "! "
+					+ "Parece que você ainda não possui um plano assinado na plataforma para assistir filmes. "
+					+ "Assine um de nossos planos e venha fazer parte da melhor plataforma de filmes que existe :)";
+		}
+
+		if (!servicoPagamento.validaPagamentoPlanoContrato(contrato)) {
+			return  "Olá " + this.nome + "! "
+					+ "O serviço de pagamentos identificou uma pendência de pagamento. "
+					+ "Favor entrar em contato com DevInFlix para normalizar o seu acesso e voltar"
+					+ "a assistis os melhores filmes na melhor plataforma que existe!" + "Estamos te aguardando :)";
+		}
+
 		if (catalogo.getFilmes().contains(filme)) {
 			this.addGeneroAssistido(filme.getGenero());
 			catalogo.addGeneroAssistido(filme.getGenero());
-			return "Executando player para reproduzir o filme do link a seguir: " + filme.getLinkFilme();
+			return "Olá " + this.nome + "! "
+					+ "Executando player para reproduzir o filme do link a seguir: " + filme.getLinkFilme();
 		}
 		return "Filme não encontrado no catálogo";
+
 	}
 
 	/*
@@ -175,7 +211,7 @@ public class Usuario implements GeneroMaisAssistido {
 	}
 
 	@Override
-	public GeneroFilme getGeneroMaisAssistido() {
+	public String getGeneroMaisAssistido() {
 
 		/*
 		 * Percorre a lista para validar qual é o genero mais assitido pelo usuário
@@ -186,23 +222,32 @@ public class Usuario implements GeneroMaisAssistido {
 			 * Valida se o gênero mais assistido for vazio ou se a quantidade assistida do
 			 * gênero da lista for maior que o genero mais assistido
 			 */
-			if (this.generoMaisAssistidoUsuario == null
-					|| generoMaisAssistido.getQtdAssistido() > this.generoMaisAssistidoUsuario.getQtdAssistido()) {
-				this.generoMaisAssistidoUsuario = generoMaisAssistido;
+			if (getGeneroMaisAssistidoUsuario() == null
+					|| generoMaisAssistido.getQtdAssistido() > getGeneroMaisAssistidoUsuario().getQtdAssistido()) {
+				setGeneroMaisAssistidoUsuario(generoMaisAssistido);
 			}
 		}
-		
+
 		/*
-		 * Se houverem elementos com a mesma quantidade assistida
-		 * por padrão o genêro mais assistido será considerado conforme ordem alfabética
+		 * Se houverem elementos com a mesma quantidade assistida por padrão o genêro
+		 * mais assistido será considerado conforme ordem alfabética
 		 */
-		
-		return this.generoMaisAssistidoUsuario.getGeneroAssistido();
+		if (getGeneroMaisAssistidoUsuario() == null) {
+			return "Você ainda não assistiu nenhum filme na plataforma!";
+		}
+
+		return getGeneroMaisAssistidoUsuario().getGeneroAssistido().name();
+
 	}
 
 	// Retorna lista dos gêneros assistidos do cátalogo
 	public Set<GeneroAssistido> listaGenerosAssistidosUsuario() {
 		return this.generosAssistidosUsuario;
+	}
+
+	// Método que permite pagar parcela do plano (mensal/anual)
+	public void pagarParcelaPlano() {
+		servicoPagamento.processaPagamentoPlanoContrato(contrato, contrato.getPlanoContratado().getPreco());
 	}
 
 }

@@ -190,10 +190,10 @@ public class UnindoTodosPontos1 {
 		
 		System.out.println("---------------------------");
 		System.out.println("GENEROS MAIS ASSISTIDO DO CATÁLOGO DE FILMES");
-		System.out.println(catalogo.getGeneroMaisAssistido().name());
+		System.out.println(catalogo.getGeneroMaisAssistido());
 		
 		System.out.println("\nGENEROS MAIS ASSISTIDO DO USUÁRIO " + usuario1.getNome().toUpperCase());
-		System.out.println(usuario1.getGeneroMaisAssistido().name());
+		System.out.println(usuario1.getGeneroMaisAssistido());
 		
 	}
 }

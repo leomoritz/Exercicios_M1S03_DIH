@@ -12,7 +12,7 @@ public class CatalogoFilmes implements GeneroMaisAssistido {
 
 	private List<Filme> filmes = new ArrayList<>();
 	private List<String> indicacoesNovosFilmes = new ArrayList<>();
-	
+
 	/*
 	 * Utilizado TreeSet para não permitir elementos repetidos em relação aos
 	 * gêneros mais assistidos. Implementado equals/hashcode e compareTo na classe
@@ -81,7 +81,7 @@ public class CatalogoFilmes implements GeneroMaisAssistido {
 	}
 
 	@Override
-	public GeneroFilme getGeneroMaisAssistido() {
+	public String getGeneroMaisAssistido() {
 
 		/*
 		 * Percorre a lista para validar qual é o genero mais assitido pelo usuário
@@ -97,13 +97,19 @@ public class CatalogoFilmes implements GeneroMaisAssistido {
 				this.generoMaisAssistidoCatalogo = generoMaisAssistido;
 			}
 		}
-		
+
 		/*
-		 * Se houverem elementos com a mesma quantidade assistida
-		 * o genêro mais assistido será retornado conforme ordem alfabética
+		 * Se houverem elementos com a mesma quantidade assistida o genêro mais
+		 * assistido será retornado conforme ordem alfabética
 		 */
+
 		
-		return this.generoMaisAssistidoCatalogo.getGeneroAssistido();
+		if (this.generoMaisAssistidoCatalogo == null) {
+			return "Ainda nenhum filme foi assistido na plataforma. É necessário que haja pelo menos"
+					+ " um filme assistido!";
+		}
+
+		return this.generoMaisAssistidoCatalogo.getGeneroAssistido().name();
 	}
 
 	// Retorna lista dos gêneros assistidos do cátalogo
