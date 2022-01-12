@@ -1,11 +1,9 @@
 package interfaces;
 
-import filmes.CatalogoFilmes;
+import plataforma.Plataforma;
 
 public interface IndicacoesCatalogo {
 
-	public String addIndicacoesNovosFilme(String nomeNovoFilme, String usuarioIndicou, CatalogoFilmes catalogo);
-
-	public boolean removeIndicacoesNovosFilme(int indexIndicacao, CatalogoFilmes catalogo);
+	public String addIndicacoesNovosFilme(String nomeNovoFilme, String usuarioIndicou, Plataforma plataforma);
 
 }

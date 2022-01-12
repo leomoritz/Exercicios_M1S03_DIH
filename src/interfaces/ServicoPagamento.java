@@ -1,11 +1,11 @@
 package interfaces;
 
-import usuarios.ContratoCliente;
+import usuarios.UsuarioAssinaturaPlano;
 
 public interface ServicoPagamento {
 	
-	public void gerarParcelaPlanoContrato(ContratoCliente contrato);
-	public Boolean validaPagamentoPlanoContrato(ContratoCliente contrato);
-	public Boolean processaPagamentoPlanoContrato(ContratoCliente contrato, Double pagamento);
+	public Boolean gerarParcelaPlanoContrato(UsuarioAssinaturaPlano assinaturaUsuario);
+	public Boolean processaPagamentoPlanoContrato(UsuarioAssinaturaPlano assinaturaUsuario);
+	public Boolean verificaPendenciaFinanceira(UsuarioAssinaturaPlano assinaturaUsuario);
 
 }

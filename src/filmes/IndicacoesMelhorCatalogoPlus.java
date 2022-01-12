@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import interfaces.IndicacoesCatalogo;
+import plataforma.Plataforma;
 
 public class IndicacoesMelhorCatalogoPlus implements IndicacoesCatalogo {
 
@@ -21,7 +22,7 @@ public class IndicacoesMelhorCatalogoPlus implements IndicacoesCatalogo {
 	private int qtdIndicacaoUsuario = 0;
 
 	@Override
-	public String addIndicacoesNovosFilme(String nomeNovoFilme, String usuarioIndicou, CatalogoFilmes catalogo) {
+	public String addIndicacoesNovosFilme(String nomeNovoFilme, String usuarioIndicou, Plataforma plataforma) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Classe para formatar o LocalDate
 
 		this.dataIndicacao = LocalDate.now();// A data da indicação sempre será a data atual
@@ -50,23 +51,13 @@ public class IndicacoesMelhorCatalogoPlus implements IndicacoesCatalogo {
 		this.dataUltimaIndicacao = this.dataIndicacao;
 		this.qtdIndicacaoUsuario++;
 
-		catalogo.getIndicacoesNovosFilmes().add("Filme indicado: " + nomeNovoFilme.toUpperCase()
+		plataforma.getIndicacoesNovosFilmes().add("Filme indicado: " + nomeNovoFilme.toUpperCase()
 				+ " - Usuário que indicou: " + usuarioIndicou.toUpperCase());
 
 		return "Indicação do filme " + nomeNovoFilme.toUpperCase()
 				+ " realizada com sucesso! Muito obrigado por nos ajudar a tornar"
 				+ " a DevInFlix na melhor plataforma de filmes que existe!";
 
-	}
-
-	@Override
-	public boolean removeIndicacoesNovosFilme(int indexIndicacao, CatalogoFilmes catalogo) {
-		int tamanhoLista = catalogo.getIndicacoesNovosFilmes().size();
-		catalogo.getIndicacoesNovosFilmes().remove(indexIndicacao);
-		if (catalogo.getIndicacoesNovosFilmes().size() < tamanhoLista) {
-			return true;
-		}
-		return false;
 	}
 
 }

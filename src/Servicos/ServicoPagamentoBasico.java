@@ -1,53 +1,53 @@
-package Servicos;
+package servicos;
 
 import interfaces.ServicoPagamento;
-import usuarios.ContratoCliente;
+import usuarios.UsuarioAssinaturaPlano;
 
 public class ServicoPagamentoBasico implements ServicoPagamento {
 
 	@Override
-	public Boolean validaPagamentoPlanoContrato(ContratoCliente contrato) {
-		if (contrato.getParcela() == 0.0) {
-			contrato.setIsInadimplente(false);
-			return true; // retorna true caso o pagamento do plano esteja OK
+	public Boolean gerarParcelaPlanoContrato(UsuarioAssinaturaPlano assinaturaUsuario) {
+
+		Double precoPlano = assinaturaUsuario.getPlanoContratado().getPreco();
+
+		if (assinaturaUsuario.getMensalidade() == null || assinaturaUsuario.getMensalidade() == 0.0) {
+			assinaturaUsuario.setMensalidade(precoPlano);
+			return true;
 		}
 
-		return false; // retorna false caso o contrato esteja inadimplente
+		return false;
 	}
 
 	@Override
-	public Boolean processaPagamentoPlanoContrato(ContratoCliente contrato, Double valorPagamento) {
+	public Boolean processaPagamentoPlanoContrato(UsuarioAssinaturaPlano assinaturaUsuario) {
 
-		Double valorParcela = contrato.getParcela();
+		Double valorPagamento = assinaturaUsuario.getPlanoContratado().getPreco();
 
-		if (valorParcela == 0.0 || valorParcela == null) {
-			gerarParcelaPlanoContrato(contrato);
-		}
-
-		/*
-		 * Validação para nunca permitir quitar um plano se a diferença entre valor da
-		 * parcela e valor pago for maior que zero ou se o valor pago for maior que o
-		 * valor do plano
-		 */
-		if ((valorParcela - valorPagamento) > 0.0 || valorPagamento > contrato.getPlanoContratado().getPreco()) {
+		if (assinaturaUsuario.getMensalidade() == 0.0) {
 			return false;
 		}
 
-		contrato.setParcela(0.0); // quita o valor da parcela caso tenha passado pelas validações anteriores
-
-		// devido a quitação da parcela, valida se o contrato está inadimplente:
-		// se sim atualiza para adimplente
-		if (contrato.getIsInadimplente()) {
-			validaPagamentoPlanoContrato(contrato);
+		if (assinaturaUsuario.getMensalidade() != valorPagamento) {
+			return false;
 		}
 
+		assinaturaUsuario.setMensalidade(0.0);
+		verificaPendenciaFinanceira(assinaturaUsuario);
 		return true;
 
 	}
 
 	@Override
-	public void gerarParcelaPlanoContrato(ContratoCliente contrato) {
-		contrato.setParcela(contrato.getPlanoContratado().getPreco());
+	public Boolean verificaPendenciaFinanceira(UsuarioAssinaturaPlano assinaturaUsuario) {
+
+		if (assinaturaUsuario.getMensalidade() != 0.0) {
+			assinaturaUsuario.setIsInadimplente(true);
+		} else {
+			assinaturaUsuario.setIsInadimplente(false);
+		}
+
+		return assinaturaUsuario.getIsInadimplente();
+
 	}
 
 }
