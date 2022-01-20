@@ -2,10 +2,13 @@ package usuarios;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
 import enums.GeneroFilme;
+import filmes.Filme;
 import filmes.GeneroAssistido;
 import filmes.IndicacoesMelhorCatalogoPlus;
 import interfaces.GeneroMaisAssistido;
@@ -18,9 +21,10 @@ import interfaces.IndicacoesCatalogo;
  *
  */
 
-public class Usuario implements GeneroMaisAssistido {
+public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 
 	private String nome;
+	private final String email;
 	private String endereco;
 	private String dataNascimento;
 	private UsuarioAssinaturaPlano plano;
@@ -29,6 +33,8 @@ public class Usuario implements GeneroMaisAssistido {
 
 	private List<String> recomendacoesRecebidas = new ArrayList<>();
 	private Set<GeneroAssistido> generosAssistidosUsuario = new TreeSet<>();
+	private Set<Filme> filmesCurtidos = new TreeSet<>();
+	private Set<Filme> filmesDescurtidos = new TreeSet<>();
 
 	/**
 	 * Construtor que instancia um usuário com plano assinado
@@ -39,8 +45,9 @@ public class Usuario implements GeneroMaisAssistido {
 	 * @param plano
 	 */
 
-	public Usuario(String nome, String endereco, String dataNascimento, UsuarioAssinaturaPlano plano) {
+	public Usuario(String nome, String email, String endereco, String dataNascimento, UsuarioAssinaturaPlano plano) {
 		this.nome = nome;
+		this.email = email;
 		this.endereco = endereco;
 		this.dataNascimento = dataNascimento;
 		this.plano = plano;
@@ -55,8 +62,9 @@ public class Usuario implements GeneroMaisAssistido {
 	 * @param dataNascimento
 	 */
 
-	public Usuario(String nome, String endereco, String dataNascimento) {
+	public Usuario(String nome, String email, String endereco, String dataNascimento) {
 		this.nome = nome;
+		this.email = email;
 		this.endereco = endereco;
 		this.dataNascimento = dataNascimento;
 	}
@@ -71,6 +79,10 @@ public class Usuario implements GeneroMaisAssistido {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public String getEmail() {
+		return email;
 	}
 
 	public String getEndereco() {
@@ -89,8 +101,8 @@ public class Usuario implements GeneroMaisAssistido {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public UsuarioAssinaturaPlano getPlano() {
-		return plano;
+	public Optional<UsuarioAssinaturaPlano> getPlano() {
+		return Optional.of(plano);
 	}
 
 	public void setPlano(UsuarioAssinaturaPlano plano) {
@@ -115,6 +127,22 @@ public class Usuario implements GeneroMaisAssistido {
 
 	private void setGeneroMaisAssistidoUsuario(GeneroAssistido generoMaisAssistidoUsuario) {
 		this.generoMaisAssistidoUsuario = generoMaisAssistidoUsuario;
+	}
+
+	public Set<Filme> getFilmesCurtidos() {
+		return filmesCurtidos;
+	}
+
+	public void addFilmeCurtido(Filme filme) {
+		this.getFilmesCurtidos().add(filme);
+	}
+	
+	public Set<Filme> getFilmesDescurtidos() {
+		return filmesDescurtidos;
+	}
+
+	public void addFilmeDescurtido(Filme filme) {
+		this.getFilmesDescurtidos().add(filme);
 	}
 
 	/**
@@ -166,6 +194,28 @@ public class Usuario implements GeneroMaisAssistido {
 
 		return getGeneroMaisAssistidoUsuario().getGeneroAssistido().name();
 
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(email, nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(email, other.email) && Objects.equals(nome, other.nome);
+	}
+
+	@Override
+	public int compareTo(Usuario o) {
+		return nome.compareTo(o.getNome()) + email.compareTo(o.getEmail());
 	}
 
 }

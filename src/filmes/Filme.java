@@ -2,18 +2,21 @@ package filmes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import enums.GeneroFilme;
 import usuarios.Usuario;
 
-public class Filme {
+public class Filme implements Comparable<Filme>{
 
 	private String nome;
 	private String sinopse;
 	private GeneroFilme genero;
 	private String linkFilme;
 	private int qtdCurtidas;
-	private List<Usuario> usuariosCurtidas = new ArrayList<>();
+	private Set<Usuario> usuariosCurtiu = new TreeSet<>();
 	private static final List<GeneroFilme> generosFilmes = new ArrayList<>();
 
 	// Inicializdor estático da lista generosFilmes que servirá para pegar o enum pela propriedade id
@@ -91,15 +94,37 @@ public class Filme {
 	// Métodos criados para saber quais foram os usuários que curtiram este filme
 
 	public void addUsuarioCurtiu(Usuario usuario) {
-		this.usuariosCurtidas.add(usuario);
+		this.usuariosCurtiu.add(usuario);
 	}
 
 	public void removeUsuarioCurtiu(Usuario usuario) {
-		this.usuariosCurtidas.remove(usuario);
+		this.usuariosCurtiu.remove(usuario);
 	}
 
-	public List<Usuario> listaUsuarioCurtiu() {
-		return usuariosCurtidas;
+	public Set<Usuario> listaUsuarioCurtiu() {
+		return usuariosCurtiu;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(nome, sinopse);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Filme other = (Filme) obj;
+		return Objects.equals(nome, other.nome) && Objects.equals(sinopse, other.sinopse);
+	}
+
+	@Override
+	public int compareTo(Filme o) {
+		return nome.compareTo(o.getNome()) + sinopse.compareTo(o.getSinopse());
+	}
+	
 }

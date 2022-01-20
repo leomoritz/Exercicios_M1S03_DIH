@@ -2,10 +2,12 @@ package filmes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class CatalogoFilmes {
 
-	private List<Filme> filmes = new ArrayList<>();
+	private Set<Filme> filmes = new TreeSet<>();
 
 	// Construtor
 	public CatalogoFilmes() {
@@ -13,7 +15,7 @@ public class CatalogoFilmes {
 	}
 
 	// Getters
-	public List<Filme> getFilmes() {
+	public Set<Filme> getFilmes() {
 		return filmes;
 	}
 

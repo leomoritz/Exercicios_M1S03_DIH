@@ -1,7 +1,9 @@
 package plataforma;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,10 +22,11 @@ public class Plataforma implements GeneroMaisAssistido {
 	private static final String nomePlataforma = "DevInFlix";
 	private CatalogoFilmes catalogo;
 	private List<Usuario> usuarios = new ArrayList<>();
+	private Set<Usuario> usuariosSet = new TreeSet<>();
 
 	private static final ServicoPagamento servicoPagamento = new ServicoPagamentoBasico();
-	private List<String> indicacoesNovosFilmes = new ArrayList<>();
-	private List<Filme> filmesCurtidos = new ArrayList<>();
+	private Set<String> indicacoesNovosFilmes = new TreeSet<>();
+	private Set<Filme> filmesCurtidos = new TreeSet<>();
 	private Set<GeneroAssistido> generosAssistidosPlataforma = new TreeSet<>();
 	private GeneroAssistido generoMaisAssistidoPlataforma;
 
@@ -55,7 +58,19 @@ public class Plataforma implements GeneroMaisAssistido {
 		return this.getUsuarios().indexOf(usuario);
 	}
 
-	public List<Filme> getFilmesCurtidos() {
+	private Optional<Usuario> buscaUsuario(Usuario usuario) {
+		Iterator i = usuariosSet.stream().iterator();
+
+		while (i.hasNext()) {
+			if (usuario == i.next()) {
+				return Optional.of(usuario);
+			}
+		}
+
+		return Optional.empty();
+	}
+
+	public Set<Filme> getFilmesCurtidos() {
 		return filmesCurtidos;
 	}
 
@@ -79,7 +94,7 @@ public class Plataforma implements GeneroMaisAssistido {
 		this.generoMaisAssistidoPlataforma = generoMaisAssistidoPlataforma;
 	}
 
-	public List<String> getIndicacoesNovosFilmes() {
+	public Set<String> getIndicacoesNovosFilmes() {
 		return indicacoesNovosFilmes;
 	}
 
@@ -95,31 +110,58 @@ public class Plataforma implements GeneroMaisAssistido {
 	 * @return textos com informações a respeito do plano, da inadimplência ou do
 	 *         acesso ao filme.
 	 */
-	public String assistirFilme(Usuario usuario, Filme filme) {
+	public Boolean assistirFilme(Usuario usuario, Filme filme) {
 
-		int index = buscaIndexUsuario(usuario);
-
-		if (getUsuarios().get(index).getPlano() == null) {
-			return "Olá " + getUsuarios().get(index).getNome() + "! "
-					+ "Parece que você ainda não possui um plano assinado na plataforma para assistir filmes. "
-					+ "Assine um de nossos planos e venha fazer parte da melhor plataforma de filmes que existe :)";
+		if (buscaUsuario(usuario).isEmpty()) {
+			return false; // criar depois uma exceção para ser lançada aqui para usuário não encontrado
 		}
 
-		if ((getUsuarios().get(index).getPlano().getIsInadimplente())) {
-			return "Olá " + getUsuarios().get(index).getNome() + "! "
-					+ "O serviço de pagamentos identificou uma pendência de pagamento. "
-					+ "Favor entrar em contato com DevInFlix para normalizar o seu acesso e voltar"
-					+ "a assistis os melhores filmes na melhor plataforma que existe!" + "Estamos te aguardando :)";
+		if (buscaUsuario(usuario).get().getPlano().isEmpty()) {
+			return false; // criar depois uma exceção para ser lançada aqui para usuário sem plano
+							// assinado
 		}
 
-		if (getCatalogo().getFilmes().contains(filme)) {
-			getUsuarios().get(index).addGeneroAssistido(filme.getGenero());
-			this.addGeneroAssistido(filme.getGenero());
-			return "Olá " + getUsuarios().get(index).getNome() + "! "
-					+ "Executando player para reproduzir o filme do link a seguir: " + filme.getLinkFilme();
+		if (buscaUsuario(usuario).get().getPlano().get().getIsInadimplente()) {
+			return false; // criar depois uma exceção para ser lançada aqui para usuário inadimplente
 		}
 
-		return "Filme não encontrado no catálogo";
+		if (!getCatalogo().getFilmes().contains(filme)) {
+			return false; // criar depois uma exceção para ser lançada aqui para filmes que não existem no
+							// catálogo
+		}
+
+		return true; 
+		/* Só poderá assistir filme se:
+		 	* o usuário estiver cadastrado, com plano assinado e adimplente.
+		 	* o filme estiver cadastrado no catálogo de filmes da plataforma.
+		*/
+
+		/*
+		 * int index = buscaIndexUsuario(usuario);
+		 * 
+		 * if (getUsuarios().get(index).getPlano() == null) { return "Olá " +
+		 * getUsuarios().get(index).getNome() + "! " +
+		 * "Parece que você ainda não possui um plano assinado na plataforma para assistir filmes. "
+		 * +
+		 * "Assine um de nossos planos e venha fazer parte da melhor plataforma de filmes que existe :)"
+		 * ; }
+		 * 
+		 * if ((getUsuarios().get(index).getPlano().getIsInadimplente())) { return
+		 * "Olá " + getUsuarios().get(index).getNome() + "! " +
+		 * "O serviço de pagamentos identificou uma pendência de pagamento. " +
+		 * "Favor entrar em contato com DevInFlix para normalizar o seu acesso e voltar"
+		 * + "a assistis os melhores filmes na melhor plataforma que existe!" +
+		 * "Estamos te aguardando :)"; }
+		 * 
+		 * if (getCatalogo().getFilmes().contains(filme)) {
+		 * getUsuarios().get(index).addGeneroAssistido(filme.getGenero());
+		 * this.addGeneroAssistido(filme.getGenero()); return "Olá " +
+		 * getUsuarios().get(index).getNome() + "! " +
+		 * "Executando player para reproduzir o filme do link a seguir: " +
+		 * filme.getLinkFilme(); }
+		 * 
+		 * return "Filme não encontrado no catálogo";
+		 */
 
 	}
 
@@ -141,12 +183,12 @@ public class Plataforma implements GeneroMaisAssistido {
 		if (plano == null) {
 			return false;
 		}
-		
+
 		// Se não tiver assinatura, então adiciona
 		if (getUsuarios().get(index).getPlano() == null) {
 			getUsuarios().get(index).setPlano(plano);
 		}
-		
+
 		// Se tiver assinatura, então gera a 1ª mensalidade
 		if (getUsuarios().get(index).getPlano() != null) {
 			getServicopagamento().gerarParcelaPlanoContrato(getUsuarios().get(index).getPlano());
@@ -207,7 +249,7 @@ public class Plataforma implements GeneroMaisAssistido {
 
 		int index = buscaIndexUsuario(usuario);
 
-		List<Usuario> lista = filme.listaUsuarioCurtiu();
+		Set<Usuario> lista = filme.listaUsuarioCurtiu();
 
 		if (lista.contains(getUsuarios().get(index))) {
 			return false;
@@ -215,6 +257,7 @@ public class Plataforma implements GeneroMaisAssistido {
 
 		filme.setQtdCurtidas(filme.getQtdCurtidas() + 1);
 		filme.addUsuarioCurtiu(getUsuarios().get(index));
+		usuario.addFilmeCurtido(filme);
 		getFilmesCurtidos().add(filme);
 		return true;
 	}
@@ -232,11 +275,12 @@ public class Plataforma implements GeneroMaisAssistido {
 
 		int index = buscaIndexUsuario(usuario);
 
-		List<Usuario> lista = filme.listaUsuarioCurtiu();
+		Set<Usuario> lista = filme.listaUsuarioCurtiu();
 
 		if (lista.contains(getUsuarios().get(index))) {
 			filme.setQtdCurtidas(filme.getQtdCurtidas() - 1);
 			filme.removeUsuarioCurtiu(getUsuarios().get(index));
+			usuario.addFilmeDescurtido(filme);
 			getFilmesCurtidos().remove(filme);
 			return true;
 		}
