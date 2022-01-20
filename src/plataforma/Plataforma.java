@@ -8,6 +8,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import enums.GeneroFilme;
+import exceptions.AssinaturaPlanoNaoEncontradaException;
+import exceptions.FilmeNaoEncontradoException;
+import exceptions.UsuarioInadimplenteException;
+import exceptions.UsuarioNaoEncontradoException;
 import filmes.CatalogoFilmes;
 import filmes.Filme;
 import filmes.GeneroAssistido;
@@ -98,6 +102,31 @@ public class Plataforma implements GeneroMaisAssistido {
 		return indicacoesNovosFilmes;
 	}
 
+	private Optional<Exception> validaPermissoesUsuarioPlataforma(Usuario usuario) {
+
+		if (buscaUsuario(usuario).isEmpty()) {
+			return Optional.of(new UsuarioNaoEncontradoException());
+		}
+
+		if (buscaUsuario(usuario).get().getPlano().isEmpty()) {
+			return Optional.of(new AssinaturaPlanoNaoEncontradaException());
+		}
+
+		if (buscaUsuario(usuario).get().getPlano().get().getIsInadimplente()) {
+			return Optional.of(new UsuarioInadimplenteException());
+		}
+
+		return Optional.empty();
+	}
+
+	private Optional<Exception> verificaExistenciaFilmeCatalogo(Filme filme) {
+		if (!getCatalogo().getFilmes().contains(filme)) {
+			return Optional.of(new FilmeNaoEncontradoException());
+		}
+
+		return Optional.empty();
+	}
+
 	// Métodos da plataforma
 
 	/**
@@ -109,59 +138,19 @@ public class Plataforma implements GeneroMaisAssistido {
 	 *                 link do player.
 	 * @return textos com informações a respeito do plano, da inadimplência ou do
 	 *         acesso ao filme.
+	 * @throws Exception
 	 */
-	public Boolean assistirFilme(Usuario usuario, Filme filme) {
+	public String assistirFilme(Usuario usuario, Filme filme) throws Exception {
 
-		if (buscaUsuario(usuario).isEmpty()) {
-			return false; // criar depois uma exceção para ser lançada aqui para usuário não encontrado
+		if (validaPermissoesUsuarioPlataforma(usuario).isPresent()) {
+			throw validaPermissoesUsuarioPlataforma(usuario).get();
+		}
+		
+		if(verificaExistenciaFilmeCatalogo(filme).isPresent()) {
+			throw verificaExistenciaFilmeCatalogo(filme).get();
 		}
 
-		if (buscaUsuario(usuario).get().getPlano().isEmpty()) {
-			return false; // criar depois uma exceção para ser lançada aqui para usuário sem plano
-							// assinado
-		}
-
-		if (buscaUsuario(usuario).get().getPlano().get().getIsInadimplente()) {
-			return false; // criar depois uma exceção para ser lançada aqui para usuário inadimplente
-		}
-
-		if (!getCatalogo().getFilmes().contains(filme)) {
-			return false; // criar depois uma exceção para ser lançada aqui para filmes que não existem no
-							// catálogo
-		}
-
-		return true; 
-		/* Só poderá assistir filme se:
-		 	* o usuário estiver cadastrado, com plano assinado e adimplente.
-		 	* o filme estiver cadastrado no catálogo de filmes da plataforma.
-		*/
-
-		/*
-		 * int index = buscaIndexUsuario(usuario);
-		 * 
-		 * if (getUsuarios().get(index).getPlano() == null) { return "Olá " +
-		 * getUsuarios().get(index).getNome() + "! " +
-		 * "Parece que você ainda não possui um plano assinado na plataforma para assistir filmes. "
-		 * +
-		 * "Assine um de nossos planos e venha fazer parte da melhor plataforma de filmes que existe :)"
-		 * ; }
-		 * 
-		 * if ((getUsuarios().get(index).getPlano().getIsInadimplente())) { return
-		 * "Olá " + getUsuarios().get(index).getNome() + "! " +
-		 * "O serviço de pagamentos identificou uma pendência de pagamento. " +
-		 * "Favor entrar em contato com DevInFlix para normalizar o seu acesso e voltar"
-		 * + "a assistis os melhores filmes na melhor plataforma que existe!" +
-		 * "Estamos te aguardando :)"; }
-		 * 
-		 * if (getCatalogo().getFilmes().contains(filme)) {
-		 * getUsuarios().get(index).addGeneroAssistido(filme.getGenero());
-		 * this.addGeneroAssistido(filme.getGenero()); return "Olá " +
-		 * getUsuarios().get(index).getNome() + "! " +
-		 * "Executando player para reproduzir o filme do link a seguir: " +
-		 * filme.getLinkFilme(); }
-		 * 
-		 * return "Filme não encontrado no catálogo";
-		 */
+		return filme.getLinkFilme(); //Retorna link do filme caso tudo esteja OK
 
 	}
 
