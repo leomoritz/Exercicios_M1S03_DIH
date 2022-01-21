@@ -19,6 +19,7 @@ public class UsuarioAssinaturaPlano {
 	public UsuarioAssinaturaPlano(PlanosPlataforma planoContratado) {
 		this.planoContratado = planoContratado;
 		this.isInadimplente = true;
+		this.mensalidade = 0.0;
 	}
 
 	/*

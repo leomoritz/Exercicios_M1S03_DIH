@@ -4,7 +4,7 @@ import enums.GeneroFilme;
 
 public interface GeneroMaisAssistido {
 	
-	public void addGeneroAssistido(GeneroFilme genero);
-	public String getGeneroMaisAssistido();
+	public Boolean addGeneroAssistido(GeneroFilme genero);
+	public GeneroFilme getGeneroMaisAssistido();
 
 }

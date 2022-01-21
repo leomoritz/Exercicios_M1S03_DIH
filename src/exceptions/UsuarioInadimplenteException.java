@@ -12,7 +12,5 @@ public class UsuarioInadimplenteException extends Exception {
 				+ "Favor entrar em contato com DevInFlix para normalizar o seu acesso e voltar a assistis os melhores "
 				+ "filmes e séries na melhor plataforma que existe! Estamos te aguardando");
 	}
-	
-		
 
 }

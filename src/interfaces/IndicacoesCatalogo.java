@@ -1,9 +1,11 @@
 package interfaces;
 
 import plataforma.Plataforma;
+import usuarios.Usuario;
 
 public interface IndicacoesCatalogo {
 
-	public String addIndicacoesNovosFilme(String nomeNovoFilme, String usuarioIndicou, Plataforma plataforma);
+	public Boolean addIndicacoesNovosFilme(String nomeNovoFilme, Usuario usuarioIndicou,
+			Plataforma plataforma) throws Exception;
 
 }

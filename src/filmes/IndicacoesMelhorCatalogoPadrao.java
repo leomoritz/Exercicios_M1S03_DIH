@@ -2,16 +2,20 @@ package filmes;
 
 import interfaces.IndicacoesCatalogo;
 import plataforma.Plataforma;
+import usuarios.Usuario;
 
 public class IndicacoesMelhorCatalogoPadrao implements IndicacoesCatalogo {
 
 	@Override
-	public String addIndicacoesNovosFilme(String nomeNovoFilme, String usuarioIndicou, Plataforma plataforma) {
-		plataforma.getIndicacoesNovosFilmes()
-				.add("Filme indicado: " + nomeNovoFilme + " - Usuário que indicou: " + usuarioIndicou);
-		return "Indicação do filme " + nomeNovoFilme + " realizada com sucesso! Muito obrigado por nos ajudar a tornar "
-				+ "a DevInFlix na melhor plataforma de filmes que existe";
+	public Boolean addIndicacoesNovosFilme(String nomeNovoFilme, Usuario usuarioIndicou, Plataforma plataforma) {
 
+		IndicacaoFilmeCatalogo indicacaoFilmeCatalogo = new IndicacaoFilmeCatalogo(nomeNovoFilme, usuarioIndicou);
+		
+		if (plataforma.getCatalogo().getIndicacoesNovosFilmesUsuario().add(indicacaoFilmeCatalogo)) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

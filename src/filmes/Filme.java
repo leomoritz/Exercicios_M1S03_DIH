@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import enums.GeneroFilme;
 import usuarios.Usuario;
 
-public class Filme implements Comparable<Filme>{
+public class Filme implements Comparable<Filme> {
 
 	private String nome;
 	private String sinopse;
@@ -19,21 +19,21 @@ public class Filme implements Comparable<Filme>{
 	private Set<Usuario> usuariosCurtiu = new TreeSet<>();
 	private static final List<GeneroFilme> generosFilmes = new ArrayList<>();
 
-	// Inicializdor estático da lista generosFilmes que servirá para pegar o enum pela propriedade id
+	// Inicializdor estático da lista generosFilmes que servirá para pegar o enum
+	// pela propriedade id
 	static {
 		for (GeneroFilme genero : GeneroFilme.values()) {
 			generosFilmes.add(genero);
 		}
 	}
 
-	// Construtores da classe
 	public Filme(String nome, String sinopse, GeneroFilme genero, String linkFilme) {
 		this.nome = nome;
 		this.sinopse = sinopse;
 		this.genero = genero;
 		this.linkFilme = linkFilme;
 	}
-	
+
 	public Filme(String nome, String sinopse, int idGenero, String linkFilme) {
 		this.nome = nome;
 		this.sinopse = sinopse;
@@ -91,8 +91,6 @@ public class Filme implements Comparable<Filme>{
 		this.qtdCurtidas = qtdCurtidas;
 	}
 
-	// Métodos criados para saber quais foram os usuários que curtiram este filme
-
 	public void addUsuarioCurtiu(Usuario usuario) {
 		this.usuariosCurtiu.add(usuario);
 	}
@@ -126,5 +124,5 @@ public class Filme implements Comparable<Filme>{
 	public int compareTo(Filme o) {
 		return nome.compareTo(o.getNome()) + sinopse.compareTo(o.getSinopse());
 	}
-	
+
 }

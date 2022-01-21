@@ -2,24 +2,28 @@ package filmes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class CatalogoFilmes {
 
-	private Set<Filme> filmes = new TreeSet<>();
+	private final Set<Filme> filmes;
+	private final Set<IndicacaoFilmeCatalogo> indicacoesNovosFilmesUsuario;
 
-	// Construtor
 	public CatalogoFilmes() {
-
+		this.filmes = new TreeSet<>();
+		this.indicacoesNovosFilmesUsuario = new TreeSet<>();
 	}
 
-	// Getters
 	public Set<Filme> getFilmes() {
 		return filmes;
 	}
 
-	// Métodos para adicionar e remover filmes do catálogo
+	public Set<IndicacaoFilmeCatalogo> getIndicacoesNovosFilmesUsuario() {
+		return indicacoesNovosFilmesUsuario;
+	}
+
 	public void addFilmeCatalogo(Filme filme) {
 		filmes.add(filme);
 	}
