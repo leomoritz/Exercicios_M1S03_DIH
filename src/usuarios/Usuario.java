@@ -15,7 +15,7 @@ import interfaces.GeneroMaisAssistido;
 public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 
 	private String nome;
-	private final String email;
+	private final String cpf;
 	private String endereco;
 	private String dataNascimento;
 	private UsuarioAssinaturaPlano plano;
@@ -26,18 +26,18 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 	private Set<Filme> filmesCurtidos = new TreeSet<>();
 	private Set<Filme> filmesDescurtidos = new TreeSet<>();
 
-	public Usuario(String nome, String email, String endereco, String dataNascimento,
+	public Usuario(String nome, String cpf, String endereco, String dataNascimento,
 			UsuarioAssinaturaPlano plano) {
 		this.nome = nome;
-		this.email = email;
+		this.cpf = cpf;
 		this.endereco = endereco;
 		this.dataNascimento = dataNascimento;
 		this.plano = plano;
 	}
 	
-	public Usuario(String nome, String email, String endereco, String dataNascimento) {
+	public Usuario(String nome, String cpf, String endereco, String dataNascimento) {
 		this.nome = nome;
-		this.email = email;
+		this.cpf = cpf;
 		this.endereco = endereco;
 		this.dataNascimento = dataNascimento;
 	}
@@ -51,8 +51,8 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 		this.nome = nome;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getCpf() {
+		return cpf;
 	}
 
 	public String getEndereco() {
@@ -147,7 +147,7 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, nome);
+		return Objects.hash(cpf, nome);
 	}
 
 	@Override
@@ -159,12 +159,12 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(email, other.email) && Objects.equals(nome, other.nome);
+		return Objects.equals(cpf, other.cpf) && Objects.equals(nome, other.nome);
 	}
 
 	@Override
 	public int compareTo(Usuario o) {
-		return nome.compareTo(o.getNome()) + email.compareTo(o.getEmail());
+		return nome.compareTo(o.getNome()) + cpf.compareTo(o.getCpf());
 	}
 
 }
