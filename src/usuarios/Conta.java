@@ -8,13 +8,13 @@ public class Conta {
 	private final String email;
 	private final Map<Integer, Usuario> perfisDoUsuario;
 	private String senha;
-	private Boolean statusPagamento;
+	private boolean isAdimplente;
 
-	public Conta(String email, String senha, Boolean statusPagamento) {
+	public Conta(String email, String senha) {
 		this.email = email;
 		this.senha = senha;
-		this.statusPagamento = statusPagamento;
-		this.perfisDoUsuario = new HashMap<Integer, Usuario>(3);
+		this.isAdimplente = true;
+		this.perfisDoUsuario = new HashMap<Integer, Usuario>();
 	}
 
 	public String getSenha() {
@@ -25,12 +25,12 @@ public class Conta {
 		this.senha = senha;
 	}
 
-	public Boolean getStatusPagamento() {
-		return statusPagamento;
+	public boolean isAdimplente() {
+		return isAdimplente;
 	}
 
-	public void setStatusPagamento(Boolean statusPagamento) {
-		this.statusPagamento = statusPagamento;
+	public void setAdimplente(boolean isAdimplente) {
+		this.isAdimplente = isAdimplente;
 	}
 
 	public String getEmail() {
@@ -43,13 +43,13 @@ public class Conta {
 
 	public Boolean addPerfilConta(Integer idPerfil, Usuario usuario) throws Exception {
 
-		if (idPerfil == null || nomePerfil == null) {
-			throw new NullPointerException("O id ou o nome do perfil não foi informado.");
+		if (getPerfisDoUsuario().size() > 3) {
+			throw new UnsupportedOperationException("A conta atual já possui o limite máximo de perfis."
+					+ " Só é possível possuir 3 perfis por conta.");
 		}
 
-		if(getPerfisDoUsuario().put(idPerfil, nomePerfil)) {
-			
-		}
+		getPerfisDoUsuario().put(idPerfil, usuario);
+
 		return true;
 	}
 
