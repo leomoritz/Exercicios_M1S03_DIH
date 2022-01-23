@@ -15,10 +15,8 @@ import interfaces.GeneroMaisAssistido;
 public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 
 	private String nome;
-	private final String cpf;
 	private String endereco;
 	private String dataNascimento;
-	private UsuarioAssinaturaPlano plano;
 	private GeneroAssistido generoMaisAssistidoUsuario;
 
 	private List<IndicacaoFilmeUsuario> indicacoesRecebidas = new ArrayList<>();
@@ -26,22 +24,11 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 	private Set<Filme> filmesCurtidos = new TreeSet<>();
 	private Set<Filme> filmesDescurtidos = new TreeSet<>();
 
-	public Usuario(String nome, String cpf, String endereco, String dataNascimento,
-			UsuarioAssinaturaPlano plano) {
+	public Usuario(String nome, String endereco, String dataNascimento) {
 		this.nome = nome;
-		this.cpf = cpf;
-		this.endereco = endereco;
-		this.dataNascimento = dataNascimento;
-		this.plano = plano;
-	}
-	
-	public Usuario(String nome, String cpf, String endereco, String dataNascimento) {
-		this.nome = nome;
-		this.cpf = cpf;
 		this.endereco = endereco;
 		this.dataNascimento = dataNascimento;
 	}
-
 
 	public String getNome() {
 		return nome;
@@ -49,10 +36,6 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
 	}
 
 	public String getEndereco() {
@@ -69,14 +52,6 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
-	}
-
-	public UsuarioAssinaturaPlano getPlano() {
-		return plano;
-	}
-
-	public void setPlano(UsuarioAssinaturaPlano plano) {
-		this.plano = plano;
 	}
 
 	public List<IndicacaoFilmeUsuario> getIndicacoesRecebidas() {
@@ -144,10 +119,10 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 		return getGeneroMaisAssistidoUsuario().get().getGeneroAssistido();
 
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(cpf, nome);
+		return Objects.hash(dataNascimento, endereco, nome);
 	}
 
 	@Override
@@ -159,12 +134,14 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(cpf, other.cpf) && Objects.equals(nome, other.nome);
+		return Objects.equals(dataNascimento, other.dataNascimento) && Objects.equals(endereco, other.endereco)
+				&& Objects.equals(nome, other.nome);
 	}
 
 	@Override
 	public int compareTo(Usuario o) {
-		return nome.compareTo(o.getNome()) + cpf.compareTo(o.getCpf());
+		return nome.compareTo(o.getNome()) + endereco.compareTo(o.getEndereco())
+				+ dataNascimento.compareTo(o.getDataNascimento());
 	}
 
 }

@@ -1,20 +1,21 @@
 package usuarios;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Conta {
 
 	private final String email;
-	private final Map<Integer, Usuario> perfisDoUsuario;
+	private final Set<Usuario> perfisDoUsuario;
 	private String senha;
+	private UsuarioAssinaturaPlano plano;
 	private boolean isAdimplente;
 
 	public Conta(String email, String senha) {
 		this.email = email;
 		this.senha = senha;
 		this.isAdimplente = true;
-		this.perfisDoUsuario = new HashMap<Integer, Usuario>();
+		this.perfisDoUsuario = new HashSet<>();
 	}
 
 	public String getSenha() {
@@ -37,18 +38,26 @@ public class Conta {
 		return email;
 	}
 
-	public Map<Integer, Usuario> getPerfisDoUsuario() {
+	public UsuarioAssinaturaPlano getPlano() {
+		return plano;
+	}
+
+	public void setPlano(UsuarioAssinaturaPlano plano) {
+		this.plano = plano;
+	}
+
+	public Set<Usuario> getPerfisDoUsuario() {
 		return perfisDoUsuario;
 	}
 
-	public Boolean addPerfilConta(Integer idPerfil, Usuario usuario) throws Exception {
+	public Boolean addPerfilConta(Usuario usuario) throws Exception {
 
-		if (getPerfisDoUsuario().size() > 3) {
+		if (getPerfisDoUsuario().size() > 2) {
 			throw new UnsupportedOperationException("A conta atual já possui o limite máximo de perfis."
 					+ " Só é possível possuir 3 perfis por conta.");
 		}
 
-		getPerfisDoUsuario().put(idPerfil, usuario);
+		getPerfisDoUsuario().add(usuario);
 
 		return true;
 	}

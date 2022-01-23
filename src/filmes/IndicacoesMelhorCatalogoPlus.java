@@ -1,7 +1,6 @@
 package filmes;
 
 import java.time.Duration;
-import java.util.Optional;
 
 import interfaces.IndicacoesCatalogo;
 import plataforma.Plataforma;
