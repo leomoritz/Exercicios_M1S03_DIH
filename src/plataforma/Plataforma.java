@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
+import comentarios.Comentario;
 import enums.GeneroFilme;
 import exceptions.AssinaturaPlanoJaExisteException;
 import exceptions.AssinaturaPlanoNaoEncontradaException;
@@ -42,10 +43,10 @@ public class Plataforma implements GeneroMaisAssistido {
 		this.usuarios = new TreeSet<>();
 		this.filmesCurtidos = new TreeSet<>();
 		this.generosAssistidosPlataforma = new TreeSet<>();
-		this.iniciaRepositórios();
+		this.iniciaRepositorios();
 	}
 
-	private void iniciaRepositórios() throws Exception {
+	private void iniciaRepositorios() throws Exception {
 		
 		new ContaUsuarioRepository();
 		new CatalogoFilmeRepository();
@@ -120,7 +121,7 @@ public class Plataforma implements GeneroMaisAssistido {
 		boolean validaEmail = ContaUsuarioRepository.getContas().stream().anyMatch(conta -> conta.getEmail().equals(email));
 
 		if (validaEmail) {
-			throw new Exception("Desculpe, mas já existe uma conta com este e-mail cadastrado na plataforma!");
+			throw new Exception("Desculpe, mas já existe uma conta com este e-mail cadastrado na plataforma: " + email);
 		}
 
 		Conta conta = new Conta(email, senha);
@@ -142,10 +143,11 @@ public class Plataforma implements GeneroMaisAssistido {
 
 	}
 
-	public Boolean cadastrarUsuarioConta(Conta conta, String nome, String endereco, String dataNascimento) throws Exception {
-		
-		if(conta.addPerfilConta(new Usuario(nome, endereco, dataNascimento))) {
-			return true;
+	public Usuario cadastrarUsuarioConta(Conta conta, String nome, String endereco, String dataNascimento) throws Exception {
+		Usuario usuario = new Usuario(nome, endereco, dataNascimento);
+
+		if(conta.addPerfilConta(usuario)) {
+			return usuario;
 		}
 		
 		throw new IllegalArgumentException();
@@ -207,7 +209,7 @@ public class Plataforma implements GeneroMaisAssistido {
 
 	public boolean curtirFilme(Usuario usuario, Filme filme) throws Exception {
 
-		if (getExcecoesPlataforma(usuario, filme).isPresent()) {
+		if (!getExcecoesPlataforma(usuario, filme).isPresent()) {
 			throw getExcecoesPlataforma(usuario, filme).get();
 		}
 
@@ -225,7 +227,7 @@ public class Plataforma implements GeneroMaisAssistido {
 
 	public boolean descurtirFilme(Usuario usuario, Filme filme) throws Exception {
 
-		if (getExcecoesPlataforma(usuario, filme).isPresent()) {
+		if (!getExcecoesPlataforma(usuario, filme).isPresent()) {
 			throw getExcecoesPlataforma(usuario, filme).get();
 		}
 
@@ -252,6 +254,17 @@ public class Plataforma implements GeneroMaisAssistido {
 		return false;
 	}
 
+	public Boolean comentarFilme(Filme filme, Usuario usuario, String comentario) throws Exception {
+
+		if(!getExcecoesPlataforma(usuario, filme).isPresent()){
+			throw getExcecoesPlataforma(usuario, filme).get();
+		}
+
+		filme.getComentarios().add(new Comentario(comentario, usuario));
+
+		return true;
+	}
+
 	@Override
 	public Boolean addGeneroAssistido(GeneroFilme genero) {
 
@@ -275,7 +288,7 @@ public class Plataforma implements GeneroMaisAssistido {
 
 		for (GeneroAssistido generoMaisAssistido : getGenerosAssistidosPlataforma()) {
 
-			if (getGeneroMaisAssistidoPlataforma().isEmpty()) {
+			if (!getGeneroMaisAssistidoPlataforma().isPresent()) {
 				setGeneroMaisAssistidoPlataforma(generoMaisAssistido);
 			}
 

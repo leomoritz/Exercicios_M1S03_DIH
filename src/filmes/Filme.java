@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
+import comentarios.Comentario;
 import enums.GeneroFilme;
 import usuarios.Usuario;
 
@@ -16,10 +17,11 @@ public class Filme implements Comparable<Filme> {
 	private GeneroFilme genero;
 	private String linkFilme;
 	private int qtdCurtidas;
-	private Set<Usuario> usuariosCurtiu = new TreeSet<>();
-	private static final List<GeneroFilme> generosFilmes = new ArrayList<>();
+	private Set<Usuario> usuariosCurtiu;
+	private final Set<Comentario> comentarios;
 
-	// Inicializdor estático da lista generosFilmes que servirá para pegar o enum
+	private static final List<GeneroFilme> generosFilmes = new ArrayList<>();
+	// Inicializador estático da lista generosFilmes que servirá para pegar o enum
 	// pela propriedade id
 	static {
 		for (GeneroFilme genero : GeneroFilme.values()) {
@@ -32,6 +34,8 @@ public class Filme implements Comparable<Filme> {
 		this.sinopse = sinopse;
 		this.genero = genero;
 		this.linkFilme = linkFilme;
+		this.usuariosCurtiu = new TreeSet<>();
+		this.comentarios = new TreeSet<>();
 	}
 
 	public Filme(String nome, String sinopse, int idGenero, String linkFilme) {
@@ -39,6 +43,8 @@ public class Filme implements Comparable<Filme> {
 		this.sinopse = sinopse;
 		setGeneroById(idGenero);
 		this.linkFilme = linkFilme;
+		this.usuariosCurtiu = new TreeSet<>();
+		this.comentarios = new TreeSet<>();
 	}
 
 	// Getters & Setters
@@ -91,16 +97,24 @@ public class Filme implements Comparable<Filme> {
 		this.qtdCurtidas = qtdCurtidas;
 	}
 
+	public Set<Usuario> getUsuariosCurtiu() {
+		return usuariosCurtiu;
+	}
+
+	public Set<Comentario> getComentarios() {
+		return comentarios;
+	}
+
 	public void addUsuarioCurtiu(Usuario usuario) {
-		this.usuariosCurtiu.add(usuario);
+		getUsuariosCurtiu().add(usuario);
 	}
 
 	public void removeUsuarioCurtiu(Usuario usuario) {
-		this.usuariosCurtiu.remove(usuario);
+		getUsuariosCurtiu().remove(usuario);
 	}
 
 	public Set<Usuario> listaUsuarioCurtiu() {
-		return usuariosCurtiu;
+		return getUsuariosCurtiu();
 	}
 
 	@Override

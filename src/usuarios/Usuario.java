@@ -107,7 +107,7 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 	public GeneroFilme getGeneroMaisAssistido() {
 		for (GeneroAssistido generoMaisAssistido : getGenerosAssistidosUsuario()) {
 
-			if (getGeneroMaisAssistidoUsuario().isEmpty()) {
+			if (!getGeneroMaisAssistidoUsuario().isPresent()) {
 				setGeneroMaisAssistidoUsuario(generoMaisAssistido);
 			}
 
