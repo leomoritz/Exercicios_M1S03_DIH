@@ -8,17 +8,19 @@ import java.util.TreeSet;
 
 import comentarios.Comentario;
 import enums.GeneroFilme;
+import interfaces.Moderavel;
 import usuarios.Usuario;
 
-public class Filme implements Comparable<Filme> {
+public class Filme implements Comparable<Filme>, Moderavel {
 
 	private String nome;
 	private String sinopse;
 	private GeneroFilme genero;
 	private String linkFilme;
 	private int qtdCurtidas;
-	private Set<Usuario> usuariosCurtiu;
+	private final Set<Usuario> usuariosCurtiu;
 	private final Set<Comentario> comentarios;
+	private Boolean improprio;
 
 	private static final List<GeneroFilme> generosFilmes = new ArrayList<>();
 	// Inicializador estático da lista generosFilmes que servirá para pegar o enum
@@ -34,6 +36,7 @@ public class Filme implements Comparable<Filme> {
 		this.sinopse = sinopse;
 		this.genero = genero;
 		this.linkFilme = linkFilme;
+		this.improprio = false;
 		this.usuariosCurtiu = new TreeSet<>();
 		this.comentarios = new TreeSet<>();
 	}
@@ -43,6 +46,7 @@ public class Filme implements Comparable<Filme> {
 		this.sinopse = sinopse;
 		setGeneroById(idGenero);
 		this.linkFilme = linkFilme;
+		this.improprio = false;
 		this.usuariosCurtiu = new TreeSet<>();
 		this.comentarios = new TreeSet<>();
 	}
@@ -105,6 +109,14 @@ public class Filme implements Comparable<Filme> {
 		return comentarios;
 	}
 
+	public Boolean getImproprio() {
+		return improprio;
+	}
+
+	public void setImproprio(Boolean improprio) {
+		this.improprio = improprio;
+	}
+
 	public void addUsuarioCurtiu(Usuario usuario) {
 		getUsuariosCurtiu().add(usuario);
 	}
@@ -139,4 +151,8 @@ public class Filme implements Comparable<Filme> {
 		return nome.compareTo(o.getNome()) + sinopse.compareTo(o.getSinopse());
 	}
 
+	@Override
+	public void atribuiConteudoImproprio() {
+		setImproprio(true);
+	}
 }

@@ -3,18 +3,21 @@ package comentarios;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import interfaces.Moderavel;
 import usuarios.Usuario;
 
-public class Comentario implements Comparable<Comentario> {
+public class Comentario implements Comparable<Comentario>, Moderavel {
 
     private final String comentario;
     private final Usuario usuario;
     private final LocalDateTime dataHoraComentario;
+    private Boolean improprio;
 
     public Comentario(String comentario, Usuario usuario) {
         this.comentario = comentario;
         this.usuario = usuario;
         this.dataHoraComentario = LocalDateTime.now();
+        this.improprio = false;
     }
 
     public String getComentario() {
@@ -27,6 +30,14 @@ public class Comentario implements Comparable<Comentario> {
 
     public LocalDateTime getDataHoraComentario() {
         return dataHoraComentario;
+    }
+
+    public Boolean getImproprio() {
+        return improprio;
+    }
+
+    public void setImproprio(Boolean improprio) {
+        this.improprio = improprio;
     }
 
     @Override
@@ -45,5 +56,10 @@ public class Comentario implements Comparable<Comentario> {
     @Override
     public int compareTo(Comentario o) {
         return this.comentario.compareTo(o.getComentario()) + this.usuario.compareTo(o.getUsuario()) + this.dataHoraComentario.compareTo(o.getDataHoraComentario());
+    }
+
+    @Override
+    public void atribuiConteudoImproprio() {
+        setImproprio(true);
     }
 }
