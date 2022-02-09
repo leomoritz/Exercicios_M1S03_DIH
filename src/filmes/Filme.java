@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import comentarios.Comentario;
+import enums.ClassificacaoEtaria;
 import enums.GeneroFilme;
 import interfaces.Moderavel;
 import usuarios.Usuario;
@@ -18,34 +19,18 @@ public class Filme implements Comparable<Filme>, Moderavel {
 	private GeneroFilme genero;
 	private String linkFilme;
 	private int qtdCurtidas;
+	private ClassificacaoEtaria classificacaoEtariaFilme;
+
 	private final Set<Usuario> usuariosCurtiu;
 	private final Set<Comentario> comentarios;
 	private Boolean improprio;
 
-	private static final List<GeneroFilme> generosFilmes = new ArrayList<>();
-	// Inicializador estático da lista generosFilmes que servirá para pegar o enum
-	// pela propriedade id
-	static {
-		for (GeneroFilme genero : GeneroFilme.values()) {
-			generosFilmes.add(genero);
-		}
-	}
-
-	public Filme(String nome, String sinopse, GeneroFilme genero, String linkFilme) {
+	public Filme(String nome, String sinopse, GeneroFilme genero, ClassificacaoEtaria classificacaoEtariaFilme, String linkFilme) {
 		this.nome = nome;
 		this.sinopse = sinopse;
 		this.genero = genero;
 		this.linkFilme = linkFilme;
-		this.improprio = false;
-		this.usuariosCurtiu = new TreeSet<>();
-		this.comentarios = new TreeSet<>();
-	}
-
-	public Filme(String nome, String sinopse, int idGenero, String linkFilme) {
-		this.nome = nome;
-		this.sinopse = sinopse;
-		setGeneroById(idGenero);
-		this.linkFilme = linkFilme;
+		this.classificacaoEtariaFilme = classificacaoEtariaFilme;
 		this.improprio = false;
 		this.usuariosCurtiu = new TreeSet<>();
 		this.comentarios = new TreeSet<>();
@@ -76,15 +61,6 @@ public class Filme implements Comparable<Filme>, Moderavel {
 		this.genero = genero;
 	}
 
-	// Método para pegar o enum pelo ID
-	public void setGeneroById(int idGenero) {
-		for (GeneroFilme genero : generosFilmes) {
-			if (genero.getId() == idGenero) {
-				this.setGenero(genero);
-			}
-		}
-	}
-
 	public String getLinkFilme() {
 		return linkFilme;
 	}
@@ -103,6 +79,10 @@ public class Filme implements Comparable<Filme>, Moderavel {
 
 	public Set<Usuario> getUsuariosCurtiu() {
 		return usuariosCurtiu;
+	}
+
+	public ClassificacaoEtaria getClassificacaoEtariaFilme() {
+		return classificacaoEtariaFilme;
 	}
 
 	public Set<Comentario> getComentarios() {

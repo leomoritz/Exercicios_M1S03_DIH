@@ -1,5 +1,6 @@
 package plataforma;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -8,6 +9,7 @@ import comentarios.Comentario;
 import enums.GeneroFilme;
 import exceptions.AssinaturaPlanoJaExisteException;
 import exceptions.AssinaturaPlanoNaoEncontradaException;
+import exceptions.ClassificacaoEtariaException;
 import exceptions.ContaInadimplenteException;
 import exceptions.ContaNaoEncontradaException;
 import exceptions.FilmeNaoEncontradoException;
@@ -26,6 +28,7 @@ import usuarios.Conta;
 import usuarios.IndicacaoFilmeUsuario;
 import usuarios.Usuario;
 import usuarios.UsuarioAssinaturaPlano;
+import util.UtilConversorData;
 
 public class Plataforma implements GeneroMaisAssistido {
 
@@ -111,6 +114,10 @@ public class Plataforma implements GeneroMaisAssistido {
             return Optional.of(new FilmeNaoEncontradoException());
         }
 
+        if (usuario.getIdadeUsuario() != filme.getClassificacaoEtariaFilme().getFaixaEtaria()) {
+            return Optional.of(new ClassificacaoEtariaException());
+        }
+
         return Optional.empty();
     }
 
@@ -143,7 +150,8 @@ public class Plataforma implements GeneroMaisAssistido {
     }
 
     public Usuario cadastrarUsuarioConta(Conta conta, String nome, String endereco, String dataNascimento) throws Exception {
-        Usuario usuario = new Usuario(nome, endereco, dataNascimento);
+
+        Usuario usuario = new Usuario(nome, endereco, UtilConversorData.converteStringParaData(dataNascimento));
 
         if (conta.addPerfilConta(usuario)) {
             return usuario;
@@ -302,23 +310,23 @@ public class Plataforma implements GeneroMaisAssistido {
 
     public void marcarFilmeImproprio(Filme filme) throws FilmeNaoEncontradoException {
 
-		if(filme == null){
-			throw new NullPointerException("É necessário informar o filme que deseja marcar como impróprio");
-		}
+        if (filme == null) {
+            throw new NullPointerException("É necessário informar o filme que deseja marcar como impróprio");
+        }
 
-		if(!getCatalogo().getFilmes().contains(filme)){
-			throw new FilmeNaoEncontradoException();
-		}
+        if (!getCatalogo().getFilmes().contains(filme)) {
+            throw new FilmeNaoEncontradoException();
+        }
 
-		filme.atribuiConteudoImproprio();
+        filme.atribuiConteudoImproprio();
 
     }
 
     public void marcarComentarioImproprio(Comentario comentario) {
 
-		if(comentario == null){
-			throw new NullPointerException("É necessário informar o comentário que deseja marcar como impróprio");
-		}
+        if (comentario == null) {
+            throw new NullPointerException("É necessário informar o comentário que deseja marcar como impróprio");
+        }
 
         comentario.atribuiConteudoImproprio();
     }
