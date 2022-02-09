@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b032f0f-2996-42c1-8cc6-35bd76435cc6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/enums/ClassificacaoEtaria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/exceptions/ClassificacaoEtariaException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/util/UtilConversorData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/series/Episodio.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/series/Serie.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/filmes/Filme.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/filmes/Filme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plataforma/Plataforma.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/plataforma/Plataforma.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/programa/MainTestandoCadastros.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/programa/MainTestandoCadastros.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repositorios/CatalogoFilmeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repositorios/CatalogoFilmeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/usuarios/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/usuarios/Usuario.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
