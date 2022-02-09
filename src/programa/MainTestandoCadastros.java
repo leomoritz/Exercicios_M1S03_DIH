@@ -40,7 +40,7 @@ public class MainTestandoCadastros {
 
 		// Cadastrar assinatura plano
 		try {
-			UsuarioAssinaturaPlano novoPlano = new UsuarioAssinaturaPlano(PlanosPlataforma.PREMIUM);
+			UsuarioAssinaturaPlano novoPlano = new UsuarioAssinaturaPlano(PlanosPlataforma.FAMILIA);
 			plataforma.assinarPlano(conta, novoPlano);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

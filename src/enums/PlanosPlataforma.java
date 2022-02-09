@@ -3,11 +3,11 @@ package enums;
 public enum PlanosPlataforma {
 
 	BASICO
-	(19.99,	"Assista na TV, computador, celular ou tablet; Resolução 480p"),
+	(9.90,	"Assista na TV, computador, celular ou tablet; Resolução 480p; Apenas 1 perfil"),
 	PADRAO
-	(29.99,	"Assista na TV, computador, celular ou tablet; Resolução 1080p; Acesso simultâneo em até 2 aparelhos"),
-	PREMIUM
-	(39.99,	"Assista na TV, computador, celular ou tablet; Resolução 4K+HDR; Acesso simultâneo em até 4 aparelhos");
+	(6.90,	"Assista na TV, computador, celular ou tablet; Resolução 1080p; Acesso simultâneo em até 2 aparelhos; De 2 até 4 perfis"),
+	FAMILIA
+	(29.00,	"Assista na TV, computador, celular ou tablet; Resolução 4K+HDR; Acesso simultâneo em até 4 aparelhos; Plano família com 5 perfis");
 
 	private Double preco;
 	private String caracteristicas;
