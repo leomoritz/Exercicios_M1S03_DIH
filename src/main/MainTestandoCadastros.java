@@ -1,4 +1,4 @@
-package programa;
+package main;
 
 import enums.ClassificacaoEtaria;
 import enums.GeneroFilme;
@@ -29,7 +29,7 @@ public class MainTestandoCadastros {
 				.addFilmeCatalogo(new Filme("Homem Aranha: Sem volta para casa", "Sinopse filme homem aranha",
 											GeneroFilme.FANTASIA, ClassificacaoEtaria.DOZE_ANOS, "https://devinflix.com.br/homemaranhasemvoltaparacasa"));
 
-		// Cadastrando novas contas
+		/*Cadastrando novas contas
 		Conta conta = null;
 		try {
 			conta = plataforma.cadastrarConta("leogui.moritz@gmail.com", "12345678910");
@@ -74,7 +74,7 @@ public class MainTestandoCadastros {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 

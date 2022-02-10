@@ -1,6 +1,5 @@
 package plataforma;
 
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -28,7 +27,6 @@ import usuarios.Conta;
 import usuarios.IndicacaoFilmeUsuario;
 import usuarios.Usuario;
 import usuarios.UsuarioAssinaturaPlano;
-import util.UtilConversorData;
 
 public class Plataforma implements GeneroMaisAssistido {
 
@@ -41,12 +39,11 @@ public class Plataforma implements GeneroMaisAssistido {
     private final Set<GeneroAssistido> generosAssistidosPlataforma;
     private GeneroAssistido generoMaisAssistidoPlataforma;
 
-    public Plataforma(CatalogoFilmes catalogo) throws Exception {
+    public Plataforma(CatalogoFilmes catalogo) {
         this.catalogo = catalogo;
         this.usuarios = new TreeSet<>();
         this.filmesCurtidos = new TreeSet<>();
         this.generosAssistidosPlataforma = new TreeSet<>();
-        this.iniciaRepositorios();
     }
 
     private void iniciaRepositorios() throws Exception {
@@ -123,35 +120,32 @@ public class Plataforma implements GeneroMaisAssistido {
 
     /* MÉTODOS PARA CADASTRO DA CONTA E PERFIS DE USUARIO */
 
-    public Conta cadastrarConta(String email, String senha) throws Exception {
+    public Conta cadastrarConta(Conta conta) throws Exception {
 
-        boolean validaEmail = ContaUsuarioRepository.getContas().stream().anyMatch(conta -> conta.getEmail().equals(email));
+        boolean validaEmail = ContaUsuarioRepository.getContas().stream().anyMatch(contaAux -> contaAux.getEmail().equals(conta.getEmail()));
 
         if (validaEmail) {
-            throw new Exception("Desculpe, mas já existe uma conta com este e-mail cadastrado na plataforma: " + email);
+            throw new Exception("Desculpe, mas já existe uma conta com este e-mail cadastrado na plataforma: " + conta.getEmail());
         }
 
-        Conta conta = new Conta(email, senha);
         ContaUsuarioRepository.getContas().add(conta);
         return conta;
 
     }
 
-    public Optional<Conta> loginConta(String email, String senha) {
+    public Conta loginConta(String email, String senha) throws ContaNaoEncontradaException {
 
         boolean validaLogin = ContaUsuarioRepository.getContas().stream().anyMatch(conta -> conta.getEmail().equals(email) && conta.getSenha().equals(senha));
 
         if (validaLogin) {
-            return Optional.of(ContaUsuarioRepository.getContaPorEmail(email));
+            return ContaUsuarioRepository.getContaPorEmail(email);
         }
 
-        return Optional.empty();
+        throw new ContaNaoEncontradaException();
 
     }
 
-    public Usuario cadastrarUsuarioConta(Conta conta, String nome, String endereco, String dataNascimento) throws Exception {
-
-        Usuario usuario = new Usuario(nome, endereco, UtilConversorData.converteStringParaData(dataNascimento));
+    public Usuario cadastrarUsuarioConta(Conta conta, Usuario usuario) throws Exception {
 
         if (conta.addPerfilConta(usuario)) {
             return usuario;
@@ -159,6 +153,18 @@ public class Plataforma implements GeneroMaisAssistido {
 
         throw new IllegalArgumentException();
 
+    }
+
+    public Boolean removerUsuarioConta(Conta conta, String nomeUsuario) throws UsuarioNaoEncontradoException {
+
+        Usuario usuario = conta.getPerfisDoUsuario().stream().filter(usuarioAux -> usuarioAux.getNome().equalsIgnoreCase(nomeUsuario)).findFirst().get();
+
+        if (usuario != null) {
+            conta.getPerfisDoUsuario().remove(usuario);
+            return true;
+        }
+
+        throw new UsuarioNaoEncontradoException();
     }
 
     /*MÉTODOS PARA ASSINATURA DE PLANO E PARA PAGAMENTO DA MENSALIDADE*/

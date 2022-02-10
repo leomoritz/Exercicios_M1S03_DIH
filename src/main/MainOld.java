@@ -1,4 +1,4 @@
-package programa;
+package main;
 
 /*
  * package programa;

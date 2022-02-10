@@ -1,4 +1,4 @@
-package programa;
+package main;
 
 public class MainTestandoInteracoes {
 

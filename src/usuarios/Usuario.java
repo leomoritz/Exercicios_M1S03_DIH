@@ -7,16 +7,19 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import enums.GeneroFilme;
 import filmes.Filme;
 import filmes.GeneroAssistido;
 import interfaces.GeneroMaisAssistido;
+import usuarios.enderecos.Endereco;
 
 public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
 
+    private final Long idUsuario;
     private String nome;
-    private String endereco;
+    private Endereco endereco;
     private final LocalDate dataNascimento;
     private GeneroAssistido generoMaisAssistidoUsuario;
 
@@ -25,10 +28,15 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
     private Set<Filme> filmesCurtidos = new TreeSet<>();
     private Set<Filme> filmesDescurtidos = new TreeSet<>();
 
-    public Usuario(String nome, String endereco, LocalDate dataNascimento) {
+    public Usuario(String nome, Endereco endereco, LocalDate dataNascimento) {
+        idUsuario = UUID.randomUUID().getMostSignificantBits();
         this.nome = nome;
         this.endereco = endereco;
         this.dataNascimento = dataNascimento;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
     public String getNome() {
@@ -39,11 +47,11 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
         this.nome = nome;
     }
 
-    public String getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
+    public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
 
@@ -123,22 +131,21 @@ public class Usuario implements GeneroMaisAssistido, Comparable<Usuario> {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(dataNascimento, endereco, nome);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return idUsuario.equals(usuario.idUsuario);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        Usuario other = (Usuario) obj;
-        return Objects.equals(dataNascimento, other.dataNascimento) && Objects.equals(endereco, other.endereco) && Objects.equals(nome, other.nome);
+    public int hashCode() {
+        return Objects.hash(idUsuario);
     }
 
     @Override
     public int compareTo(Usuario o) {
-        return nome.compareTo(o.getNome()) + endereco.compareTo(o.getEndereco()) + dataNascimento.compareTo(o.getDataNascimento());
+        return idUsuario.compareTo(o.getIdUsuario());
     }
 
 }

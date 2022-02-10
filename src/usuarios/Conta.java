@@ -8,8 +8,8 @@ import enums.PlanosPlataforma;
 public class Conta {
 
     private final String email;
-    private final Set<Usuario> perfisDoUsuario;
     private String senha;
+    private final Set<Usuario> perfisDoUsuario;
     private UsuarioAssinaturaPlano plano;
     private boolean isAdimplente;
 

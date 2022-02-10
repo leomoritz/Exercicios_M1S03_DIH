@@ -23,6 +23,10 @@ public class CatalogoFilmes {
 		return indicacoesNovosFilmesUsuario;
 	}
 
+	public Filme getFilmePeloNome(String nomeFilme){
+		return this.getFilmes().stream().filter(filme -> filme.getNome().equals(nomeFilme)).findFirst().get();
+	}
+
 	public void addFilmeCatalogo(Filme filme) {
 		filmes.add(filme);
 	}
